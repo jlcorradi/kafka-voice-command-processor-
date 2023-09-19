@@ -11,8 +11,4 @@ public class Application {
     SpringApplication.run(Application.class, args);
   }
 
-//  @Bean
-//  public CommandLineRunner init(Producer producer) {
-//    return args -> producer.sendPayload();
-//  }
 }

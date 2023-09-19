@@ -8,7 +8,6 @@ import dev.jlcorradi.streams.voice.services.TranslateService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -42,12 +41,11 @@ class VoiceCommandParserTopologyTest {
 
   @BeforeEach
   void setup() {
-    voiceCommandParserTopology = new VoiceCommandParserTopology(0.98, speachToTextService, translateService, new StreamsBuilder());
-    Topology topology = voiceCommandParserTopology
-        .createTopology();
+    StreamsBuilder streamsBuilder = new StreamsBuilder();
+    voiceCommandParserTopology = new VoiceCommandParserTopology(0.98, speachToTextService, translateService, streamsBuilder);
 
     Properties props = new Properties();
-    topologyTestDriver = new TopologyTestDriver(topology, props);
+    topologyTestDriver = new TopologyTestDriver(null, props);
 
     voiceCommandJsonSerde = new JsonSerde<>(VoiceCommand.class);
     inputTopic = topologyTestDriver.createInputTopic(
@@ -132,7 +130,6 @@ class VoiceCommandParserTopologyTest {
     assertEquals(CALL_JOHN, output.getText());
   }
 
-  @Disabled
   @Test
   void shouldReceiveNoResponseForTooShortAudio_success() {
     // GIVEN

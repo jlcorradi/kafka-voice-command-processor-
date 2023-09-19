@@ -10,27 +10,36 @@ public class JsonSerde<T> implements Serde<T> {
   public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
   private final Class<T> clazz;
 
+  private JsonSerializer<T> serializer = new JsonSerializer<>();
+  private JsonDeserializer<T> deSerializer = new JsonDeserializer<>();
+
   public JsonSerde(Class<T> clazz) {
     this.clazz = clazz;
   }
 
   @Override
   public Serializer<T> serializer() {
-    return this::serialize;
+    return serializer;
   }
 
   @Override
   public Deserializer<T> deserializer() {
-    return (topic, data) -> deserialize(data);
+    return deSerializer;
   }
 
-  @SneakyThrows
-  private T deserialize(byte[] data) {
-    return OBJECT_MAPPER.readValue(data, clazz);
+  class JsonSerializer<T> implements Serializer<T> {
+    @Override
+    @SneakyThrows
+    public byte[] serialize(String topic, T data) {
+      return OBJECT_MAPPER.writeValueAsBytes(data);
+    }
   }
 
-  @SneakyThrows
-  private byte[] serialize(String topic, T data) {
-    return OBJECT_MAPPER.writeValueAsBytes(data);
+  class JsonDeserializer<T> implements Deserializer<T> {
+    @Override
+    @SneakyThrows
+    public T deserialize(String topic, byte[] data) {
+      return (T) OBJECT_MAPPER.readValue(data, clazz);
+    }
   }
 }

@@ -11,14 +11,12 @@ import static dev.jlcorradi.streams.voice.VoiceCommandParserTopology.UNRECOGNIZE
 
 @Slf4j
 @Component
-public class ConsumerApplication {
-
+public class ParsedVoiceCommandsConsumer {
   @KafkaListener(
-      groupId = "application-listener",
       topics = {RECOGNIZED_COMMANDS_TOPIC, UNRECOGNIZED_COMMANDS_TOPIC},
-      concurrency = "5")
-  public void consume(ConsumerRecord<String, ParsedVoiceCommand> record) {
-    log.info("Topic: {}: id: {} \n {}\n", record.topic(), record.key(), record.value());
+      groupId = "application-consumer",
+      concurrency = "${messaging.concurrency:1}")
+  void onMessage(ConsumerRecord<String, ParsedVoiceCommand> data) {
+    log.info("Topic: {}, Consumed: {}", data.topic(), data.value());
   }
-
 }

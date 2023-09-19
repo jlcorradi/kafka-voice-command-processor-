@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class VoiceCommandParserTopology {
@@ -40,7 +41,10 @@ public class VoiceCommandParserTopology {
   public void process(StreamsBuilder streamsBuilder) {
     Map<String, KStream<String, ParsedVoiceCommand>> branches =
         streamsBuilder.stream(VOICE_COMMANDS_TOPIC, Consumed.with(Serdes.String(), new JsonSerde<>(VoiceCommand.class)))
-            //.filter((key, value) -> value.getAudio().length >= 10)
+            .filter((key, value) -> Optional.ofNullable(value.getAudio())
+                .map(bytes -> bytes.length)
+                .map(length -> length >= 10)
+                .orElse(true))
             .mapValues((readOnlyKey, value) -> speachToTextService.speechToText(value))
             .split(Named.as("branches-"))
             .branch((key, value) -> value.getProbability() >= probabilityThreshold, Branched.as("recognized"))
