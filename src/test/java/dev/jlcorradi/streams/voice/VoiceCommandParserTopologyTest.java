@@ -6,14 +6,15 @@ import dev.jlcorradi.streams.voice.serdes.JsonSerde;
 import dev.jlcorradi.streams.voice.services.SpeachToTextService;
 import dev.jlcorradi.streams.voice.services.TranslateService;
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.TestInputTopic;
+import org.apache.kafka.streams.TestOutputTopic;
+import org.apache.kafka.streams.TopologyTestDriver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,30 +31,32 @@ class VoiceCommandParserTopologyTest {
   @Mock
   private TranslateService translateService;
 
-  private VoiceCommandParserTopology voiceCommandParserTopology;
-
-  private TopologyTestDriver topologyTestDriver;
   private TestInputTopic<String, VoiceCommand> inputTopic;
-  private JsonSerde<ParsedVoiceCommand> parseVoiceCommandJsonSerde;
   private TestOutputTopic<String, ParsedVoiceCommand> recognizedCommandsTopic;
-  private JsonSerde<VoiceCommand> voiceCommandJsonSerde;
   private TestOutputTopic<String, ParsedVoiceCommand> unrecognizedCommandsTopic;
 
   @BeforeEach
   void setup() {
     StreamsBuilder streamsBuilder = new StreamsBuilder();
-    voiceCommandParserTopology = new VoiceCommandParserTopology(0.98, speachToTextService, translateService, streamsBuilder);
+    // Set the probability threshold
+    VoiceCommandParserTopology voiceCommandParserTopology = new VoiceCommandParserTopology(
+        0.98, // Set the probability threshold
+        speachToTextService,
+        translateService,
+        streamsBuilder
+    );
 
-    Properties props = new Properties();
-    topologyTestDriver = new TopologyTestDriver(null, props);
+    voiceCommandParserTopology.process(streamsBuilder);
 
-    voiceCommandJsonSerde = new JsonSerde<>(VoiceCommand.class);
+    TopologyTestDriver topologyTestDriver = new TopologyTestDriver(streamsBuilder.build());
+
+    JsonSerde<VoiceCommand> voiceCommandJsonSerde = new JsonSerde<>(VoiceCommand.class);
     inputTopic = topologyTestDriver.createInputTopic(
         VoiceCommandParserTopology.VOICE_COMMANDS_TOPIC,
         Serdes.String().serializer(),
         voiceCommandJsonSerde.serializer());
 
-    parseVoiceCommandJsonSerde = new JsonSerde<>(ParsedVoiceCommand.class);
+    JsonSerde<ParsedVoiceCommand> parseVoiceCommandJsonSerde = new JsonSerde<>(ParsedVoiceCommand.class);
     recognizedCommandsTopic = topologyTestDriver.createOutputTopic(
         VoiceCommandParserTopology.RECOGNIZED_COMMANDS_TOPIC,
         Serdes.String().deserializer(),
