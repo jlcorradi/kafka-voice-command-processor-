@@ -2,6 +2,7 @@ package dev.jlcorradi.streams.voice;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.jlcorradi.streams.voice.config.StreamsProperties;
 import dev.jlcorradi.streams.voice.model.VoiceCommand;
 import dev.jlcorradi.streams.voice.serdes.JsonSerde;
 import lombok.SneakyThrows;
@@ -23,7 +24,7 @@ public class ProducerApplication {
   public static void main(String... args) {
     JsonSerde<VoiceCommand> voiceCommandJsonSerde = new JsonSerde<>(VoiceCommand.class);
     KafkaProducer<String, VoiceCommand> voiceCommandProducer =
-        new KafkaProducer<>(StreamsConfig.createConfig(), Serdes.String().serializer(), voiceCommandJsonSerde.serializer());
+        new KafkaProducer<>(new StreamsProperties().createConfig(), Serdes.String().serializer(), voiceCommandJsonSerde.serializer());
 
     List<VoiceCommand> voiceCommands = readTestData();
     voiceCommands.stream()

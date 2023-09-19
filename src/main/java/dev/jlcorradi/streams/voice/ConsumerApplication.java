@@ -1,6 +1,7 @@
 package dev.jlcorradi.streams.voice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.jlcorradi.streams.voice.config.StreamsProperties;
 import dev.jlcorradi.streams.voice.model.ParsedVoiceCommand;
 import dev.jlcorradi.streams.voice.serdes.JsonSerde;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ public class ConsumerApplication {
     JsonSerde<ParsedVoiceCommand> voiceCommandJsonSerde = new JsonSerde<>(ParsedVoiceCommand.class);
 
     try (KafkaConsumer<String, ParsedVoiceCommand> consumer =
-             new KafkaConsumer<>(StreamsConfig.createConfig(), Serdes.String().deserializer(), voiceCommandJsonSerde.deserializer())) {
+             new KafkaConsumer<>(new StreamsProperties().createConfig(), Serdes.String().deserializer(), voiceCommandJsonSerde.deserializer())) {
 
       Runtime.getRuntime().addShutdownHook(new Thread(consumer::close));
       consumer.subscribe(List.of(RECOGNIZED_COMMANDS_TOPIC, UNRECOGNIZED_COMMANDS_TOPIC));

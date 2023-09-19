@@ -2,7 +2,9 @@ package dev.jlcorradi.streams.voice.services;
 
 import dev.jlcorradi.streams.voice.model.ParsedVoiceCommand;
 import dev.jlcorradi.streams.voice.model.VoiceCommand;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MockSpeachToTextService implements SpeachToTextService {
 
   @Override

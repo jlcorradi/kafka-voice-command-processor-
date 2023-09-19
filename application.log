@@ -5093,3 +5093,17 @@ org.apache.kafka.common.errors.DisconnectException
 2023-09-18 23:56:13.702 [kafka-producer-network-thread | word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] Resetting the last seen epoch of partition recognized-commands-6 to 0 since the associated topicId changed from null to _hFIDXicSTmmiOuktBB49Q
 2023-09-18 23:56:13.702 [kafka-producer-network-thread | word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] Resetting the last seen epoch of partition recognized-commands-7 to 0 since the associated topicId changed from null to _hFIDXicSTmmiOuktBB49Q
 2023-09-18 23:56:13.702 [kafka-producer-network-thread | word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] INFO  org.apache.kafka.clients.Metadata - [Producer clientId=word-count-app-f1f9b51a-f300-42ba-b022-8d24212251e1-StreamThread-1-producer] Resetting the last seen epoch of partition recognized-commands-3 to 0 since the associated topicId changed from null to _hFIDXicSTmmiOuktBB49Q
+2023-09-19 00:29:42.182 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:29:42.184 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:29:42.267 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:29:42.267 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:29:42.272 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:29:42.273 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:29:42.279 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:29:42.279 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:31:45.532 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:31:45.535 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:31:45.616 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:31:45.616 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
+2023-09-19 00:31:45.625 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Initialized
+2023-09-19 00:31:45.625 [Test worker] INFO  org.apache.kafka.streams.processor.internals.StreamTask - stream-thread [Test worker] task [0_0] Restored and ready to run
