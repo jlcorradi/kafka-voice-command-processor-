@@ -1,0 +1,12 @@
+spring:
+  kafka:
+    bootstrap-servers:
+      - localhost:29092
+    properties:
+      # cache.max.bytes.buffering: 0
+      auto.offset.reset: earliest
+    consumer:
+      value-deserializer:
+
+    streams:
+      application-id: kafka-voice-command-processor

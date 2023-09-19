@@ -7,8 +7,8 @@ import dev.jlcorradi.streams.voice.services.SpeachToTextService;
 import dev.jlcorradi.streams.voice.services.TranslateService;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,6 @@ public class VoiceCommandParserTopology {
   public final Double probabilityThreshold;
   private final SpeachToTextService speachToTextService;
   private final TranslateService translateService;
-  private final StreamsBuilder streamsBuilder;
 
   public VoiceCommandParserTopology(
       @Value("${appConfig.probabilityThreshold:0.98}")
@@ -35,10 +34,10 @@ public class VoiceCommandParserTopology {
     this.probabilityThreshold = probabilityThreshold;
     this.speachToTextService = speachToTextService;
     this.translateService = translateService;
-    this.streamsBuilder = streamsBuilder;
   }
 
-  public Topology createTopology() {
+  @Autowired
+  public void process(StreamsBuilder streamsBuilder) {
     Map<String, KStream<String, ParsedVoiceCommand>> branches =
         streamsBuilder.stream(VOICE_COMMANDS_TOPIC, Consumed.with(Serdes.String(), new JsonSerde<>(VoiceCommand.class)))
             //.filter((key, value) -> value.getAudio().length >= 10)
@@ -60,7 +59,5 @@ public class VoiceCommandParserTopology {
 
     branches.get("branches-unrecognized")
         .to(UNRECOGNIZED_COMMANDS_TOPIC, Produced.with(Serdes.String(), valueSerde));
-
-    return streamsBuilder.build();
   }
 }
