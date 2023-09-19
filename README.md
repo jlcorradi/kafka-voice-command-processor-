@@ -10,3 +10,24 @@ Kafka and Zookeeper running
 ~~~
 This is supposed to be source code
 ~~~
+
+### Kafka Topics
+Creating the required topics:
+~~~~
+# Run against zookeeper
+kafka-topics --bootstrap-server kafka:9092 \
+  --topic voice-commands \
+  --replication-factor 1 \
+  --partitions 10 --create
+
+kafka-topics --bootstrap-server kafka:9092 \
+  --topic recognized-commands \
+  --replication-factor 1 \
+  --partitions 10 --create
+
+kafka-topics --bootstrap-server kafka:9092 \
+  --topic unrecognized-commands \
+  --replication-factor 1 \
+  --partitions 10 --create
+
+~~~~
